@@ -15,7 +15,7 @@ module Core =
        [   for i in -1..1 do
            for j in -1..1 do
            for k in -1..1 do
-               yield a+i, b+j, c*k
+               yield a+i, b+j, c+k
        ] |> Set.ofList
 
    let neighbors (cell:Cell) : Neighbors = neighborhood cell |> Set.remove cell
