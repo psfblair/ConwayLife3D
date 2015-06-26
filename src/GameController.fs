@@ -1,6 +1,7 @@
 ﻿namespace ConwayLife3D.Controllers
 
 open UnityEngine
+open ConwayLife3D
 open ConwayLife3D.Life.Core
 open System.Collections
 
@@ -24,39 +25,39 @@ type GameController() =
             ( 1,  0,  1) 
         ]
 
-    let nextGenerationPairedWithPrevious (previousGeneration, generation)  =
+    let nextGenerationPairedWithPrevious (previousGeneration, generation): Generation * Generation  =
         let nextGen = nextGeneration generation
         (generation, nextGen)
         
-    let generationSequence =
-        Seq.unfold (fun generationPair -> Some(generationPair, nextGenerationPairedWithPrevious generationPair)) (firstGeneration, firstGeneration)
+    let generationSequence: seq<Generation * Generation> =
+        Seq.unfold (fun generationPair -> Some(generationPair, nextGenerationPairedWithPrevious generationPair)) (Set.empty, firstGeneration)
+
+    let unityCoordinatesFrom (cell: Cell): Vector3 = 
+        match cell with
+            | (x, y, z)     -> new Vector3(float32 x, float32 y, float32 z)
 
     member this.Start () =
-        this.Initialize()
         this.StartCoroutine (this.RunGame())        
-
-    member private this.Initialize() =
-        Set.iter this.BirthAt firstGeneration
 
     member private this.RunGame (): IEnumerator =
         let initialWait = seq { yield WaitForSeconds(pauseBetweenGenerations) }
         let waitSequence = generationSequence 
-                            |> Seq.map (fun generationPair -> this.UpdateScene((fst generationPair), (snd generationPair))) 
+                            |> Seq.map (fun generationPair -> this.UpdateSceneAndWait(generationPair)) 
                             |> Seq.append initialWait
+
         waitSequence.GetEnumerator() :> IEnumerator
 
-    member private this.UpdateScene (previousGeneration: Generation, nextGeneration: Generation) =
+    member private this.UpdateSceneAndWait (previousGeneration: Generation, nextGeneration: Generation) =
         let cellsToDestroy = previousGeneration - nextGeneration
         Set.iter this.DeathAt cellsToDestroy
 
         let cellsToCreate =  nextGeneration - previousGeneration
         Set.iter this.BirthAt cellsToCreate
+
         WaitForSeconds(pauseBetweenGenerations)
 
-    member private this.BirthAt (position: Cell) : Unit = 
-        match position with
-            | (x, y, z)     -> Object.Instantiate(this.token, new Vector3(float32 x, float32 y, float32 z), Quaternion.identity) |> ignore
+    member private this.BirthAt (cell: Cell) : Unit = 
+        Object.Instantiate(this.token, (unityCoordinatesFrom cell), Quaternion.identity) |> ignore
 
-    member private this.DeathAt (position: Cell) : Unit =
-        match position with
-            | (x, y, z)     -> Object.Instantiate(this.reaper, new Vector3(float32 x, float32 y, float32 z), Quaternion.identity) |> ignore
+    member private this.DeathAt (cell: Cell) : Unit =
+        Object.Instantiate(this.reaper, (unityCoordinatesFrom cell), Quaternion.identity) |> ignore
