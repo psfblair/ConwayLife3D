@@ -14,16 +14,7 @@ type GameController() =
     [<SerializeField>] [<DefaultValue>] val mutable token: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable reaper: GameObject
 
-    let firstGeneration: Generation = 
-        Set.ofList [
-            ( 0,  0, -1);
-            ( 0, -1,  0);
-            (-1,  0,  0);
-            ( 1,  0,  0);
-            ( 0,  1,  0);
-            (-1,  0,  1);
-            ( 1,  0,  1) 
-        ]
+    let firstGeneration: Generation = Patterns.CROSS
 
     let nextGenerationPairedWithPrevious (previousGeneration, generation): Generation * Generation  =
         let nextGen = nextGeneration generation
