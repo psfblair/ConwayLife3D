@@ -3,6 +3,8 @@
 open ConwayLife3D.Life.Core
 
 module Patterns =
+    type internal PatternModuleTypeAccessor = interface end
+
     let TEST_2D: Generation = 
         Set.ofList [
                 ( 0,  0,  0); 
