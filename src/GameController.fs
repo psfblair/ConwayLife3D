@@ -16,6 +16,11 @@ type GameController() =
     [<SerializeField>] [<DefaultValue>] val mutable token: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable reaper: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable startPanel: GameObject
+    [<SerializeField>] [<DefaultValue>] val mutable restartText: Text
+
+    let mutable restart = false
+
+    let restartMessage = "Press 'R' to Restart"
 
     let nextGenerationPairedWithPrevious (previousGeneration, generation): Generation * Generation  =
         let nextGen = nextGeneration generation
@@ -29,10 +34,17 @@ type GameController() =
             | (x, y, z)     -> new Vector3(float32 x, float32 y, float32 z)
 
     member this.Start () =
+        restart <- false
         this.startPanel.gameObject.SetActive(true)
+        this.restartText.text <- restartMessage
+
+    member this.Update () =
+        if (restart) then
+            Application.LoadLevel(Application.loadedLevel)
 
     member this.StartGame (patternName: string) =
         this.startPanel.gameObject.SetActive(false)
+        this.restartText.text <- ""
         let patternsType = typeof<PatternModuleTypeAccessor>.DeclaringType
         let selectedPattern = patternsType.GetProperty(patternName).GetValue(null, Array.empty) :?> Generation
         this.StartCoroutine (this.RunGame selectedPattern) |> ignore
@@ -43,6 +55,7 @@ type GameController() =
         let waitSequence = generationSequence firstGeneration
                             |> Seq.map (fun generationPair -> this.UpdateSceneAndWait(generationPair)) 
                             |> Seq.append initialWait
+                            |> Seq.takeWhile (fun _ -> this.ShouldContinue())
 
         waitSequence.GetEnumerator() :> IEnumerator
 
@@ -60,3 +73,9 @@ type GameController() =
 
     member private this.DeathAt (cell: Cell) : Unit =
         Object.Instantiate(this.reaper, (unityCoordinatesFrom cell), Quaternion.identity) |> ignore
+
+    member this.ShouldContinue () = 
+        if Input.GetKey(KeyCode.R) then 
+            restart <- true
+            false
+        else true
