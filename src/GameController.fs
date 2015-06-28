@@ -20,19 +20,18 @@ type GameController() =
     [<SerializeField>] [<DefaultValue>] val mutable token: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable reaper: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable startPanel: GameObject
-    [<SerializeField>] [<DefaultValue>] val mutable restartText: Text
+    [<SerializeField>] [<DefaultValue>] val mutable instructionsPanel: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable runner: UnityLife
 
-    let restartMessage = "Press 'R' to Restart"
 
     member this.Start () =
         this.startPanel.gameObject.SetActive(true)
-        this.restartText.text <- restartMessage
+        this.instructionsPanel.gameObject.SetActive(true)
 
     // Called on button click
     member this.StartGame (patternName: string) =
         this.startPanel.gameObject.SetActive(false)
-        this.restartText.text <- ""
+        this.instructionsPanel.gameObject.SetActive(false)
         let selectedPattern = this.GetSelectedPattern (patternName)
         this.RunUnityLife (Set.empty, selectedPattern)
 
