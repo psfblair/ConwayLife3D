@@ -61,6 +61,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Life.fs" />
     <Compile Include="Patterns.fs" />
+    <Compile Include="UnityLife.fs" />
     <Compile Include="GameController.fs" />
     <Compile Include="DestroyByContact.fs" />
   </ItemGroup>
