@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Life.fs" />
+    <Compile Include="Game.fs" />
     <Compile Include="Patterns.fs" />
     <Compile Include="UnityLife.fs" />
     <Compile Include="GameController.fs" />

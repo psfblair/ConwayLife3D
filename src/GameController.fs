@@ -1,11 +1,13 @@
 ﻿namespace ConwayLife3D.Controllers
 
-open UnityEngine
-open UnityEngine.UI
 open ConwayLife3D
+open ConwayLife3D.Life.Core
+open ConwayLife3D.Life.Game
 open ConwayLife3D.Patterns
 open ConwayLife3D.Unity
-open ConwayLife3D.Life.Core
+
+open UnityEngine
+open UnityEngine.UI
 open System.Collections
 
 type GameController() = 
@@ -23,7 +25,7 @@ type GameController() =
     [<SerializeField>] [<DefaultValue>] val mutable instructionsPanel: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable runner: UnityLife
 
-
+    (******** PUBLIC MEMBERS **********************************************************************************)
     member this.Start () =
         this.startPanel.gameObject.SetActive(true)
         this.instructionsPanel.gameObject.SetActive(true)
@@ -41,6 +43,8 @@ type GameController() =
             | Restarting -> Application.LoadLevel(Application.loadedLevel)
             | _ -> ()
 
+
+    (******** PRIVATE MEMBERS **********************************************************************************)
     member private this.GetSelectedPattern (patternName: string): Generation =
         let patternsType = typeof<PatternModuleTypeAccessor>.DeclaringType
         patternsType.GetProperty(patternName).GetValue(null, Array.empty) :?> Generation

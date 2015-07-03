@@ -1,10 +1,11 @@
 ﻿namespace ConwayLife3D.Unity
 
+open ConwayLife3D.Life.Core
+open ConwayLife3D.Life.Game
+
 open UnityEngine
 open System.Collections
-open ConwayLife3D.Life.Core
 
-type GenerationTransition = Generation * Generation
 type GameState = 
     | Running of float32
     | Restarting
@@ -14,17 +15,11 @@ type UnityLife(token: GameObject, reaper: GameObject, pauseBetweenGenerations: f
 
     let mutable gameState = Running Time.time
 
-    let nextGenerationPairedWithPrevious (previousGeneration, generation): GenerationTransition =
-        let nextGen = nextGeneration generation
-        (generation, nextGen)
-
-    let generationSequence (firstGenerationPair: GenerationTransition): seq<GenerationTransition> =
-        Seq.unfold (fun generationPair -> Some(generationPair, nextGenerationPairedWithPrevious generationPair)) firstGenerationPair
-
     let unityCoordinatesFrom (cell: Cell): Vector3 =
         match cell with
             | (x, y, z)     -> new Vector3(float32 x, float32 y, float32 z)
 
+    (******** PUBLIC MEMBERS **********************************************************************************)
     member this.RunGame (generationTransition: GenerationTransition): IEnumerator =
         let initialWait = seq { yield WaitForSeconds(pauseBetweenGenerations) }
         let waitSequence = generationSequence generationTransition
@@ -40,13 +35,10 @@ type UnityLife(token: GameObject, reaper: GameObject, pauseBetweenGenerations: f
         Input.GetKey(KeyCode.P) && this.PauseWaitElapsed(timeOfLastToggle)
 
 
-    member private this.UpdateSceneAndWait (previousGeneration: Generation, nextGeneration: Generation) =
-        let cellsToDestroy = previousGeneration - nextGeneration
-        Set.iter this.DeathAt cellsToDestroy
-
-        let cellsToCreate =  nextGeneration - previousGeneration
-        Set.iter this.BirthAt cellsToCreate
-
+    (******** PRIVATE MEMBERS **********************************************************************************)
+    member private this.UpdateSceneAndWait (generationTransition: GenerationTransition) =
+        Set.iter this.DeathAt (cellsToDestroy generationTransition)
+        Set.iter this.BirthAt (cellsToCreate generationTransition)
         WaitForSeconds(pauseBetweenGenerations)
 
     member private this.BirthAt (cell: Cell) : Unit =
