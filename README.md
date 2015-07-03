@@ -2,8 +2,7 @@
 
 ### A Unity Game with code in F\# 
 
-This simulation is an extension of Conway's Game of Life from 2 dimensions
-to three dimensions.
+This simulation is an extension of Conway's Game of Life from 2D to 3D.
 
 From A. K. Dewdney's "Computer Recreations" column in Scientific American around 1987, which proposes a notation for 
 rules of life-like simulations:
@@ -15,7 +14,8 @@ rules of life-like simulations:
 For example, Rule 4555 means that a living cell dies if it has less than four or more than five 
 living neighbors and a dead cell becomes alive if it has exactly five living neighbors.
 
-People seem to like 4555. See for instance, the comments in [life3d.c] (http://web.mit.edu/ghudson/dev/nokrb/third/afs-krb5/xlockmore/life3d.c):
+For three dimensions, people seem to like 4555. See for instance, the comments in 
+[life3d.c] (http://web.mit.edu/ghudson/dev/nokrb/third/afs-krb5/xlockmore/life3d.c):
 
 ```
 /* 4555 life is probably the best */
