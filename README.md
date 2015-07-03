@@ -22,3 +22,5 @@ People seem to like 4555. See for instance, the comments in [life3d.c] (http://w
 /* 5766 life has gliders like 2d 2333 life */
 /* There are no known gliders for 5655 or 6767 so the others may be better */
 ```
+
+The current version of the game uses 4555. In the future I may make the rule configurable.
