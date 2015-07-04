@@ -34,7 +34,7 @@ type CameraController() =
         if Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.RightShift)
         then this.transform.Translate(new Vector3(0.0f, speed * Time.deltaTime, 0.0f))
 
-        (******* ROTATION -YAW **************************************************************)
+        (******* ROTATION - YAW *************************************************************)
         if Input.GetKey(KeyCode.Comma)
         then this.transform.Rotate(new Vector3(0.0f, -rotationSpeed * Time.deltaTime, 0.0f))
 
@@ -47,11 +47,3 @@ type CameraController() =
 
         if Input.GetKey(KeyCode.L)
         then this.transform.Rotate(new Vector3(rotationSpeed * Time.deltaTime, 0.0f, 0.0f))
-
-        (******* ROTATION - ROLL ************************************************************)
-        if Input.GetKey(KeyCode.Z)
-        then this.transform.Rotate(new Vector3(0.0f, 0.0f, -rotationSpeed * Time.deltaTime))
-
-        if Input.GetKey(KeyCode.C)
-        then this.transform.Rotate(new Vector3(0.0f, 0.0f, rotationSpeed * Time.deltaTime))
-
