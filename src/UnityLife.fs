@@ -32,6 +32,11 @@ type UnityLife(token: GameObject, reaper: GameObject, selectorCube: GameObject, 
     member this.PauseToggled timeOfLastToggle =
         Input.GetKey(KeyCode.P) && this.PauseWaitElapsed(timeOfLastToggle)
 
+    member this.MaybeModifyPattern() =
+        match gameState with
+            | Paused((thisGeneration, nextGeneration), pauseStart) when this.SelectToggled pauseStart ->
+                this.ToggleCellAt(selectorCube.gameObject.transform.position, thisGeneration) 
+            | _ -> ()            
 
     (******** PRIVATE MEMBERS **********************************************************************************)
     member private this.UpdateSceneAndWait (generationTransition: GenerationTransition) =
@@ -58,3 +63,20 @@ type UnityLife(token: GameObject, reaper: GameObject, selectorCube: GameObject, 
             | _ -> true
 
     member private this.PauseWaitElapsed timeOfLastToggle = timeOfLastToggle + pauseWait < Time.time
+
+    member private this.ToggleCellAt (selectorCoordinates: Vector3, thisGeneration: Generation) =
+        Debug.Log("Toggling Cell")
+        let selectedCell = cellFromUnityCoordinates selectorCoordinates
+
+        let newGeneration = 
+            if Set.contains selectedCell thisGeneration
+            then this.DeathAt selectedCell                                
+                 Set.remove selectedCell thisGeneration
+            else this.BirthAt selectedCell
+                 Set.add selectedCell thisGeneration
+
+        let newNextGeneration = nextGeneration newGeneration
+        gameState <- Paused((newGeneration, newNextGeneration), Time.time)
+
+    member private this.SelectToggled timeOfLastToggle =
+        Input.GetKey(KeyCode.Space) && this.PauseWaitElapsed(timeOfLastToggle)

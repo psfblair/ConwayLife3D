@@ -30,6 +30,7 @@ type GameController() =
     member this.Start () =
         this.startPanel.gameObject.SetActive(true)
         this.instructionsPanel.gameObject.SetActive(true)
+        this.selectorCube.SetActive(false)
 
     // Called on button click
     member this.StartGame (patternName: string) =
@@ -41,9 +42,9 @@ type GameController() =
     member this.Update () =
         match this.runner.GameState with
             | Paused(generationPair, pauseStart) when this.runner.PauseToggled(pauseStart) -> this.RunUnityLife generationPair
+            | Paused(_, _) -> this.runner.MaybeModifyPattern()
             | Restarting -> Application.LoadLevel(Application.loadedLevel)
             | _ -> ()
-
 
     (******** PRIVATE MEMBERS **********************************************************************************)
     member private this.GetSelectedPattern (patternName: string): Generation =
