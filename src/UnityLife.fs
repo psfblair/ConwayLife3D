@@ -52,7 +52,7 @@ type UnityLife(token: GameObject, reaper: GameObject, pauseBetweenGenerations: f
             | Running startTime when this.PauseToggled startTime ->
                 gameState <- Paused(generationPair, Time.time)
                 false
-            | Running startTime when Input.GetKey(KeyCode.R) ->
+            | Running startTime when Input.GetKey(KeyCode.R) || Input.GetKey(KeyCode.Escape) ->
                 gameState <- Restarting
                 false
             | _ -> true
