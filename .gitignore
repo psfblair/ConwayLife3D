@@ -3,6 +3,7 @@
 # Unity
 Temp/
 Library/
+Build/
 Assets/Frameworks/ConwayLife3D.dll
 Assets/Frameworks/FSharp.Core.dll
 Assets/Frameworks/FSharp.Core.optdata

@@ -21,21 +21,20 @@ type GameController() =
 
     [<SerializeField>] [<DefaultValue>] val mutable token: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable reaper: GameObject
-    [<SerializeField>] [<DefaultValue>] val mutable startPanel: GameObject
+    [<SerializeField>] [<DefaultValue>] val mutable explanationPanel: GameObject
+    [<SerializeField>] [<DefaultValue>] val mutable buttonPanel: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable instructionsPanel: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable selectorCube: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable runner: UnityLife
 
     (******** PUBLIC MEMBERS **********************************************************************************)
     member this.Start () =
-        this.startPanel.gameObject.SetActive(true)
-        this.instructionsPanel.gameObject.SetActive(true)
-        this.selectorCube.SetActive(false)
+        this.SetControlPanelState (true)
+        this.selectorCube.SetActive (false)
 
     // Called on button click
     member this.StartGame (patternName: string) =
-        this.startPanel.gameObject.SetActive(false)
-        this.instructionsPanel.gameObject.SetActive(false)
+        this.SetControlPanelState (false)
         let selectedPattern = this.GetSelectedPattern (patternName)
         this.RunUnityLife (Set.empty, selectedPattern)
 
@@ -54,3 +53,8 @@ type GameController() =
     member private this.RunUnityLife (generationPair: GenerationTransition) = 
         this.runner <- new UnityLife(this.token, this.reaper, this.selectorCube, pauseBetweenGenerations, pauseWait)
         this.StartCoroutine (this.runner.RunGame(generationPair)) |> ignore
+
+    member private this.SetControlPanelState (state: bool) =
+        this.explanationPanel.gameObject.SetActive(state)
+        this.buttonPanel.gameObject.SetActive(state)
+        this.instructionsPanel.gameObject.SetActive(state)
