@@ -23,6 +23,7 @@ type GameController() =
     [<SerializeField>] [<DefaultValue>] val mutable reaper: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable startPanel: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable instructionsPanel: GameObject
+    [<SerializeField>] [<DefaultValue>] val mutable selectorCube: GameObject
     [<SerializeField>] [<DefaultValue>] val mutable runner: UnityLife
 
     (******** PUBLIC MEMBERS **********************************************************************************)
@@ -50,5 +51,5 @@ type GameController() =
         patternsType.GetProperty(patternName).GetValue(null, Array.empty) :?> Generation
 
     member private this.RunUnityLife (generationPair: GenerationTransition) = 
-        this.runner <- new UnityLife(this.token, this.reaper, pauseBetweenGenerations, pauseWait)
+        this.runner <- new UnityLife(this.token, this.reaper, this.selectorCube, pauseBetweenGenerations, pauseWait)
         this.StartCoroutine (this.runner.RunGame(generationPair)) |> ignore

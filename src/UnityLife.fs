@@ -2,6 +2,7 @@
 
 open ConwayLife3D.Life.Core
 open ConwayLife3D.Life.Game
+open ConwayLife3D.Unity.Utils
 
 open UnityEngine
 open System.Collections
@@ -11,13 +12,10 @@ type GameState =
     | Restarting
     | Paused of GenerationTransition * float32
 
-type UnityLife(token: GameObject, reaper: GameObject, pauseBetweenGenerations: float32, pauseWait: float32) =
+type UnityLife(token: GameObject, reaper: GameObject, selectorCube: GameObject, pauseBetweenGenerations: float32, pauseWait: float32) =
 
     let mutable gameState = Running Time.time
-
-    let unityCoordinatesFrom (cell: Cell): Vector3 =
-        match cell with
-            | (x, y, z)     -> new Vector3(float32 x, float32 y, float32 z)
+    do selectorCube.SetActive(false)
 
     (******** PUBLIC MEMBERS **********************************************************************************)
     member this.RunGame (generationTransition: GenerationTransition): IEnumerator =
@@ -51,9 +49,11 @@ type UnityLife(token: GameObject, reaper: GameObject, pauseBetweenGenerations: f
         match gameState with 
             | Running startTime when this.PauseToggled startTime ->
                 gameState <- Paused(generationPair, Time.time)
+                selectorCube.SetActive(true)
                 false
             | Running startTime when Input.GetKey(KeyCode.R) || Input.GetKey(KeyCode.Escape) ->
                 gameState <- Restarting
+                selectorCube.SetActive(false)
                 false
             | _ -> true
 
