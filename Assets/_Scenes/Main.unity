@@ -25,7 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: .0469999984, g: .0430000015, b: .0350000001, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 21c4d6b4e2a0f4a8782454a5b56a3d1c, type: 2}
   m_HaloStrength: .5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1520,7 +1520,7 @@ RectTransform:
   m_AnchorMin: {x: .5, y: 1}
   m_AnchorMax: {x: .5, y: 1}
   m_AnchoredPosition: {x: 0, y: -40}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 150, y: 30}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &673173234
 MonoBehaviour:
@@ -3731,7 +3731,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: .5}
   m_AnchorMax: {x: 0, y: .5}
   m_AnchoredPosition: {x: 50, y: 185}
-  m_SizeDelta: {x: 65, y: 10}
+  m_SizeDelta: {x: 75, y: 10}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1688563929
 MonoBehaviour:
@@ -3783,7 +3783,7 @@ MonoBehaviour:
     Slash
 
 
-    ''l''
+    Semicolon
 
     Period'
 --- !u!222 &1688563930
@@ -4358,7 +4358,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 1, y: .5}
   m_AnchorMax: {x: 1, y: .5}
-  m_AnchoredPosition: {x: -15, y: 173.5}
+  m_AnchoredPosition: {x: -12, y: 174.5}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1909304965
