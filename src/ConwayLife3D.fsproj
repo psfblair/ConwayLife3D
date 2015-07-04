@@ -66,6 +66,7 @@
     <Compile Include="UnityLife.fs" />
     <Compile Include="GameController.fs" />
     <Compile Include="CameraController.fs" />
+    <Compile Include="SelectorController.fs" />
     <Compile Include="DestroyByContact.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets" />

@@ -30,7 +30,7 @@ type UnityLife(token: GameObject, reaper: GameObject, selectorCube: GameObject, 
     member this.GameState = gameState
 
     member this.PauseToggled timeOfLastToggle =
-        Input.GetKey(KeyCode.P) && this.PauseWaitElapsed(timeOfLastToggle)
+        Input.GetKey(KeyCode.P) && pauseWaitElapsed timeOfLastToggle pauseWait Time.time
 
     member this.MaybeModifyPattern() =
         match gameState with
@@ -39,17 +39,6 @@ type UnityLife(token: GameObject, reaper: GameObject, selectorCube: GameObject, 
             | _ -> ()            
 
     (******** PRIVATE MEMBERS **********************************************************************************)
-    member private this.UpdateSceneAndWait (generationTransition: GenerationTransition) =
-        Set.iter this.DeathAt (cellsToDestroy generationTransition)
-        Set.iter this.BirthAt (cellsToCreate generationTransition)
-        WaitForSeconds(pauseBetweenGenerations)
-
-    member private this.BirthAt (cell: Cell) : Unit =
-        Object.Instantiate(token, (unityCoordinatesFrom cell), Quaternion.identity) |> ignore
-
-    member private this.DeathAt (cell: Cell) : Unit =
-        Object.Instantiate(reaper, (unityCoordinatesFrom cell), Quaternion.identity) |> ignore
-
     member private this.ShouldContinue (generationPair: GenerationTransition) =
         match gameState with 
             | Running startTime when this.PauseToggled startTime ->
@@ -62,10 +51,21 @@ type UnityLife(token: GameObject, reaper: GameObject, selectorCube: GameObject, 
                 false
             | _ -> true
 
-    member private this.PauseWaitElapsed timeOfLastToggle = timeOfLastToggle + pauseWait < Time.time
+    member private this.UpdateSceneAndWait (generationTransition: GenerationTransition) =
+        Set.iter this.DeathAt (cellsToDestroy generationTransition)
+        Set.iter this.BirthAt (cellsToCreate generationTransition)
+        WaitForSeconds(pauseBetweenGenerations)
+
+    member private this.BirthAt (cell: Cell) : Unit =
+        Object.Instantiate(token, (unityCoordinatesFrom cell), Quaternion.identity) |> ignore
+
+    member private this.DeathAt (cell: Cell) : Unit =
+        Object.Instantiate(reaper, (unityCoordinatesFrom cell), Quaternion.identity) |> ignore
+
+    member private this.SelectToggled timeOfLastToggle =
+        Input.GetKey(KeyCode.Space) && pauseWaitElapsed timeOfLastToggle pauseWait Time.time
 
     member private this.ToggleCellAt (selectorCoordinates: Vector3, thisGeneration: Generation) =
-        Debug.Log("Toggling Cell")
         let selectedCell = cellFromUnityCoordinates selectorCoordinates
 
         let newGeneration = 
@@ -77,6 +77,3 @@ type UnityLife(token: GameObject, reaper: GameObject, selectorCube: GameObject, 
 
         let newNextGeneration = nextGeneration newGeneration
         gameState <- Paused((newGeneration, newNextGeneration), Time.time)
-
-    member private this.SelectToggled timeOfLastToggle =
-        Input.GetKey(KeyCode.Space) && this.PauseWaitElapsed(timeOfLastToggle)

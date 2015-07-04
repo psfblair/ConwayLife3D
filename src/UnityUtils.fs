@@ -11,3 +11,6 @@ module Utils =
 
     let cellFromUnityCoordinates (coordinates: Vector3): Cell =
         (int(coordinates.x), int(coordinates.y), int(coordinates.z))
+
+    let pauseWaitElapsed (pauseWait: float32) (timeOfLastToggle: float32) (currentTime: float32): bool = 
+        timeOfLastToggle + pauseWait < currentTime
