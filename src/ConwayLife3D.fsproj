@@ -30,7 +30,7 @@
     <DocumentationFile>bin\Debug\ConwayLife3D.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -40,6 +40,14 @@
     </PlatformTarget>
     <DefineConstants>
     </DefineConstants>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ConwayLife3D.dll ../../../Assets/Frameworks/" workingdir="${TargetDir}" />
+        <Command type="AfterBuild" command="cp FSharp.Core.dll ../../../../../Assets/Frameworks/" workingdir="${SolutionDir}/packages/FSharp.Core.3.0.0.2/lib/net20/" />
+        <Command type="AfterBuild" command="cp FSharp.Core.optdata ../../../../../Assets/Frameworks/" workingdir="${SolutionDir}/packages/FSharp.Core.3.0.0.2/lib/net20/" />
+        <Command type="AfterBuild" command="cp FSharp.Core.sigdata ../../../../../Assets/Frameworks/" workingdir="${SolutionDir}/packages/FSharp.Core.3.0.0.2/lib/net20/" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -59,18 +67,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Life.fs" />
-    <Compile Include="Game.fs" />
-    <Compile Include="Patterns.fs" />
-    <Compile Include="UnityUtils.fs" />
-    <Compile Include="UnityLife.fs" />
-    <Compile Include="GameController.fs" />
-    <Compile Include="CameraController.fs" />
-    <Compile Include="SelectorController.fs" />
-    <Compile Include="DestroyByContact.fs" />
+    <Compile Include="Core\Life.fs" />
+    <Compile Include="Core\Game.fs" />
+    <Compile Include="Core\Patterns.fs" />
+    <Compile Include="Unity\UnityUtils.fs" />
+    <Compile Include="Unity\UnityLife.fs" />
+    <Compile Include="Unity\GameController.fs" />
+    <Compile Include="Unity\CameraController.fs" />
+    <Compile Include="Unity\SelectorController.fs" />
+    <Compile Include="Unity\DestroyByContact.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets" />
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\" />
+    <Folder Include="Unity\" />
   </ItemGroup>
 </Project>
