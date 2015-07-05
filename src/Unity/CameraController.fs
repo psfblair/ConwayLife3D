@@ -6,7 +6,7 @@ type CameraController() =
     inherit MonoBehaviour()
 
     [<SerializeField>] 
-    let mutable speed: float32 = 2.0f
+    let mutable speed: float32 = 5.0f
 
     [<SerializeField>] 
     let mutable rotationSpeed: float32 = 90.0f
@@ -43,7 +43,7 @@ type CameraController() =
 
         (******* ROTATION - PITCH ***********************************************************)
         if Input.GetKey(KeyCode.Semicolon)
-        then this.transform.Rotate(new Vector3(-rotationSpeed * Time.deltaTime, 0.0f, 0.0f), Space.World)
+        then this.transform.Rotate(new Vector3(-rotationSpeed * Time.deltaTime, 0.0f, 0.0f))
 
         if Input.GetKey(KeyCode.Period)
-        then this.transform.Rotate(new Vector3(rotationSpeed * Time.deltaTime, 0.0f, 0.0f), Space.World)
+        then this.transform.Rotate(new Vector3(rotationSpeed * Time.deltaTime, 0.0f, 0.0f))
